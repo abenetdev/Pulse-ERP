@@ -9,7 +9,7 @@ export default function NavBar() {
 
   return (
     <div className="flex items-center justify-between mx-10 my-4">
-      <img className="cursor-pointer" onClick={() => navigate('/')} src={assets.logo} alt="" />
+      <img className="cursor-pointer" onClick={() => navigate('/')} src={assets.pulse} alt="" />
       
       <ul className="flex gap-10">
         <li><NavLink to="/">Home</NavLink></li>

@@ -18,7 +18,7 @@ const initialFormData = {
 }
 export default function AddDoctor() {
   const[formData, setFormData] = useState(initialFormData);
-  const {aToken, backendUrl} = useContext(AdminContext);
+  const {backendUrl} = useContext(AdminContext);
   const handleSendFormData = async (e) => {
     e.preventDefault();
     try {
@@ -33,8 +33,7 @@ export default function AddDoctor() {
        newformData.append("education", formData.education);
        newformData.append("address", JSON.stringify({line1:formData.addressline1, line2: formData.addressline2}));
        newformData.append("aboutDoctor", formData.aboutDoctor);
-       const {data} = await axios.post(backendUrl + "api/admin/add-doctor", newformData, {headers: {
-        admintoken: aToken}});
+       const {data} = await axios.post(backendUrl + "api/admin/add-doctor", newformData);
        if(data.success){
         toast.success("doctor saved")
        } else {

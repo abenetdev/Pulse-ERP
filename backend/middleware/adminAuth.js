@@ -2,21 +2,23 @@ const jwt = require('jsonwebtoken');
 
 const adminAuth = async (req, res, next) => {
     try {
-        // Extract the token from headers (case-sensitive)
-        const {admintoken} = req.headers; 
-
-        if (!admintoken) {
+        // Extract the token from the Authorization header (Bearer token)
+        const authHeader = req.headers.authorization;
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
             return res.status(401).json({
                 success: false,
-                message: "UnAuthorized user!",
+                message: "Unauthorized user! Token is missing or malformed.",
             });
         }
 
+        // Extract token (remove "Bearer " prefix)
+        const token = authHeader.split(' ')[1];
+
         // Verify token
-        const decodedToken = jwt.verify(admintoken, process.env.JWT_SECRETE);
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRETE);
 
         // Check if the decoded email matches the admin's email
-        if (decodedToken !== process.env.ADMIN_EMAIL + process.env.ADMIN_PASSWORD) {
+        if (decodedToken.email !== process.env.ADMIN_EMAIL) {
             return res.status(403).json({
                 success: false,
                 message: "Unauthorized access! Please log in as an admin.",
@@ -26,7 +28,7 @@ const adminAuth = async (req, res, next) => {
         // Proceed to the next middleware
         next();
     } catch (error) {
-        console.error(error);
+        console.error("Error in admin authentication:", error);
         res.status(500).json({
             success: false,
             message: "Something went wrong with admin authentication",

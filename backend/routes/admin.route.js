@@ -4,7 +4,7 @@ const upload = require('../middleware/multer');
 const adminAuth = require('../middleware/adminAuth');
 const adminRouter = express.Router();
 
-adminRouter.post('/add-doctor', upload.single('docImage'), addDoctor);
+adminRouter.post('/add-doctor', adminAuth , upload.single('docImage'), addDoctor);
 adminRouter.post('/admin', adminLogin);
 
 module.exports = adminRouter;

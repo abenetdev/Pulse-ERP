@@ -10,6 +10,12 @@ const addDoctor = async (req, res) => {
             education, experience, aboutDoctor, available, 
             fee, address, date, slots_booked} = req.body;
         const imageFile = req.file;
+        if(!imageFile){
+            return res.json({
+                success: false,
+                message: "image is not selected"
+            })
+        }
         // check all field are fill properly
         if(!name || !email || !password || 
             !speciality || !education || !experience 
@@ -20,6 +26,7 @@ const addDoctor = async (req, res) => {
                     message: "please filout the detail"
                 })
         };
+
         // check if it is a valid email
         if(!validator.isEmail(email)){
             return res.status(401).json({
@@ -84,8 +91,7 @@ const adminLogin = async (req, res) => {
         const {email, password} = req.body;
 
         if(email === process.env.ADMIN_EMAIL || password === process.env.ADMIN_PASSWORD){
-           const token = jwt.sign(email + password,  process.env.JWT_SECRETE);
-
+           const token = jwt.sign(email,  process.env.JWT_SECRETE);
            return res.status(201).json({
             success: true,
             token: token
@@ -103,5 +109,4 @@ const adminLogin = async (req, res) => {
         })
     }
 }
-
 module.exports = {addDoctor, adminLogin};
