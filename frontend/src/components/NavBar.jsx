@@ -9,8 +9,10 @@ export default function NavBar() {
 
   return (
     <div className="flex items-center justify-between mx-10 my-4">
+      <div className="flex items-center">
       <img className="cursor-pointer" onClick={() => navigate('/')} src={assets.pulse} alt="" />
-      
+       <h2 className="text-2xl font-bold">Pulse</h2>
+      </div>      
       <ul className="flex gap-10">
         <li><NavLink to="/">Home</NavLink></li>
         <li><NavLink to="/doctors">All Doctors</NavLink></li>

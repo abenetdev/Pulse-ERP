@@ -10,26 +10,30 @@ import Dashboard from "../pages/admin/Dashboard"
 import Appointments from "../pages/admin/Appointment"
 import DoctorsList from "../pages/admin/DoctorsList"
 import AddDoctor from "../pages/admin/AddDoctor";
+//guard
+import AdminAuthProtector from "../context/AdminAuthProtector";
 export default function App() {
-  const {aToken} = useContext(AdminContext)
+  const {aToken} = useContext(AdminContext);
   return aToken ? (
     <div className=""> 
       <NavBar/>
-      <div className="flex relative w-full bg-green-500">
+      <div className="grid grid-cols-[1fr_6fr]">
         <SideBar/>
         <div className="">
           <Routes>
-            <Route path={'/dashboard'} element={<Dashboard/>}/>
-            <Route path={'/appointmnets'} element={<Appointments/>}/>
-            <Route path={'/add-doctor'} element={<AddDoctor/>}/>
-            <Route path={'/doctors-list'} element={<DoctorsList/>}/>
+            <Route path={'/dashboard'} element={<AdminAuthProtector><Dashboard/></AdminAuthProtector>}/>
+            <Route path={'/appointmnets'} element={<AdminAuthProtector><Appointments/></AdminAuthProtector>}/>
+            <Route path={'/add-doctor'} element={<AdminAuthProtector><AddDoctor/></AdminAuthProtector>}/>
+            <Route path={'/doctors-list'} element={<AdminAuthProtector><DoctorsList/></AdminAuthProtector>}/>
           </Routes>
         </div>
       </div>
     </div>
   ) : (
     <>
-      <Login/> 
+      <Routes>
+        <Route path={'/admin/login'} element={<Login/>}/>
+      </Routes>
     </>
   )
 }

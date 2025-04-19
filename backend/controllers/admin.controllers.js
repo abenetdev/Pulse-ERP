@@ -7,8 +7,8 @@ const jwt = require('jsonwebtoken')
 const addDoctor = async (req, res) => {
     try {
         const {name, email, password, speciality, 
-            education, experience, aboutDoctor, available, 
-            fee, address, date, slots_booked} = req.body;
+            education, experience, aboutDoctor, 
+            fee, address} = req.body;
         const imageFile = req.file;
         if(!imageFile){
             return res.json({
@@ -19,8 +19,8 @@ const addDoctor = async (req, res) => {
         // check all field are fill properly
         if(!name || !email || !password || 
             !speciality || !education || !experience 
-            || !aboutDoctor || !available || !fee 
-            || !address || !date || !slots_booked){
+            || !aboutDoctor || !fee 
+            || !address){
                 return res.status(401).json({
                     success: false,
                     message: "please filout the detail"
@@ -43,12 +43,24 @@ const addDoctor = async (req, res) => {
             })
         }
         
+        const findEmailFromDb = await Doctors.findOne({email});
+
+        if(findEmailFromDb){
+            return res.status(409).json({
+                success: false,
+                message: "doctor exist with this email, trying with different email"
+            })
+        }
+
         //encrypt password
         const salt = await bcryptjs.genSalt(10);
         const hashPassword = await bcryptjs.hash(password, salt);
 
         //upload to cloudinary
-        const uploadToCloudinary = await cloudinary.uploader.upload(imageFile.path, {resource_type: 'image'});
+        const uploadToCloudinary = await cloudinary.uploader.upload(imageFile.path, {
+            folder: "doctors",
+            resource_type:"image"
+        });
         const imageUrl = uploadToCloudinary.secure_url;
         
         //prepare saved Datas
@@ -62,7 +74,6 @@ const addDoctor = async (req, res) => {
             education,
             experience,
             aboutDoctor,
-            available,
             fee,
             address: JSON.parse(address),
             date: Date.now()        
@@ -84,14 +95,79 @@ const addDoctor = async (req, res) => {
     }
 };
 
+// fetching lists of doctors
+
+const getAllDoctors = async (req, res) => {
+    try {
+        const gettingDoctors = await Doctors.find({}).select("-password").sort({date: -1});          
+        if(gettingDoctors){
+            return res.status(201).json({
+                success: true,
+                data: gettingDoctors
+            })
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(501).json({
+            success: false,
+            message: "something went wrong with fetching doctors list"
+        })
+    }
+}
+
 // admin login controller
+
+const getDoctorsDetail = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const gettingDoctorDetail = await Doctors.findById(id).select("-password");
+        if(gettingDoctorDetail){
+            return res.status(201).json({
+                success: true,
+                data: gettingDoctorDetail
+            })
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(501).json({
+            success: false,
+            message: "something went wrong with fetching doctors list"
+        })
+    }
+}
+
+//delete doctors controller
+
+const deleteDoctor = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const deleteDoctor = await Doctors.findByIdAndDelete(id);
+        if(deleteDoctor){
+            return res.status(201).json({
+                success: true,
+                message: "doctor deleted successfully"
+            })
+        } else {
+            return res.status(401).json({
+                success: false,
+                message: "doctor not found with this id"
+            })
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(501).json({
+            success: false,
+            message: "something went wrong with deleting doctors list"
+        })
+    }
+}
 
 const adminLogin = async (req, res) => {
     try {
         const {email, password} = req.body;
 
         if(email === process.env.ADMIN_EMAIL || password === process.env.ADMIN_PASSWORD){
-           const token = jwt.sign(email,  process.env.JWT_SECRETE);
+           const token = jwt.sign({email},  process.env.JWT_SECRETE, {expiresIn: "1d"});
            return res.status(201).json({
             success: true,
             token: token
@@ -108,5 +184,11 @@ const adminLogin = async (req, res) => {
             message: "something went wrong with admin login api"
         })
     }
-}
-module.exports = {addDoctor, adminLogin};
+} 
+module.exports = {
+    addDoctor, 
+    adminLogin, 
+    getAllDoctors,
+    getDoctorsDetail,
+    deleteDoctor
+};

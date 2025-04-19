@@ -2,6 +2,7 @@ import axios from "axios";
 import { useContext, useState } from "react"
 import { AdminContext } from "../context/AdminContext";
 import { toast } from "react-toastify";
+import { assets } from "../assets/assets_admin/assets";
 export default function Login() {
    const[loginRole, setLoginRole] = useState("Admin");
    const[email, setEmail] = useState('');
@@ -30,36 +31,43 @@ export default function Login() {
     }
    }
   return (
-    <form onSubmit={handleAdminAuthentication} className="min-h-[80vh] flex items-center">
-      <div className="flex flex-col gap-3 m-auto items-center p-8 min-w-[340px] sm:min-w-96 border border-gray-300 text-zinc-600 text-sm rounded-xl shadow-lg">
-        <p className="ml-[-70px]">{loginRole === "Admin" ? "Welcome Admin" : "Welcome! Doctor"}</p>
-        <div  className="w-full">
-          <p>Email</p>
-          <input 
-            className="border border-zinc-300 rounded-md w-full p-2 mt-1"
-            type="email" 
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div  className="w-full">
-          <p>Password</p>
-          <input 
-            className="border border-zinc-300 rounded-md w-full p-2 mt-1"
-            type="password" 
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <button className="px-14 cursor-pointer py-3 w-full rounded-2xl text-white bg-blue-600">Login</button>
-        {
-          loginRole === "Admin"? (
-             <h2>Doctor login? <span onClick={() => setLoginRole("Doctor")} className="text-blue-500 cursor-pointer">Click here.</span></h2>
-          ): (
-            <h2>Admin login? <span onClick={() => setLoginRole("Admin")} className="text-blue-500 cursor-pointer">Click here.</span></h2>
-          )
-        }
+    <div className="grid grid-cols-[2fr_1fr] w-[80%] m-auto mt-[6rem]">
+      <div className="">
+          {loginRole === "Admin" 
+          ?  <img src={assets.loginpic1} width={600} alt="" />:  <img src={assets.loginpic2} width={600} alt="" /> }
+         
       </div>
-    </form>
+      <form onSubmit={handleAdminAuthentication} className="">
+        <div className="flex min-h-full flex-col gap-3 m-auto items-center p-8 min-w-[340px] sm:min-w-96 border border-gray-300 text-zinc-600 text-sm rounded-xl shadow-lg">
+          <p className="text-3xl font-bold">{loginRole === "Admin" ? "Welcome! Admin" : "Welcome! Doctor"}</p>
+          <div className="w-full">
+            <p>Email</p>
+            <input 
+              className="border border-zinc-300 rounded-md w-full p-3 mt-1"
+              type="email" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div  className="w-full">
+            <p>Password</p>
+            <input 
+              className="border border-zinc-300 rounded-md w-full p-3 mt-1"
+              type="password" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <button className="px-14 cursor-pointer py-3 w-full rounded-2xl text-white bg-blue-600">Login</button>
+          {
+            loginRole === "Admin"? (
+              <h2>Doctor login? <span onClick={() => setLoginRole("Doctor")} className="text-blue-500 cursor-pointer">Click here.</span></h2>
+            ): (
+              <h2>Admin login? <span onClick={() => setLoginRole("Admin")} className="text-blue-500 cursor-pointer">Click here.</span></h2>
+            )
+          }
+        </div>
+      </form>
+    </div>
   )
 }

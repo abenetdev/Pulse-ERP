@@ -8,12 +8,12 @@ export default function NavBar() {
     const navigate = useNavigate();
     const handleAdminLogOut = () => {
         toast.success("logged out successfully")
-        navigate('/')
+        navigate('/admin/login')
         aToken && setAToken(""),
         localStorage.removeItem("aToken")
     }
   return (
-    <div className="flex fixed w-full bg-white justify-between p-4 border-b border-gray-400">
+    <div className="flex z-10 fixed w-full bg-white justify-between p-4 border-b border-gray-400">
         <div className="relative">
             <img src={assets.admin_logo} width={150} height={150} />
             <h1 className="border absolute top-3 right-[-43px] px-1 rounded-4xl w-fit text-[11px]  border-gray-500 text-black">admin</h1>

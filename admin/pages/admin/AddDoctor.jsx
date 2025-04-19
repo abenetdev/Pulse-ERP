@@ -18,7 +18,7 @@ const initialFormData = {
 }
 export default function AddDoctor() {
   const[formData, setFormData] = useState(initialFormData);
-  const {backendUrl} = useContext(AdminContext);
+  const {backendUrl, aToken} = useContext(AdminContext);
   const handleSendFormData = async (e) => {
     e.preventDefault();
     try {
@@ -33,9 +33,15 @@ export default function AddDoctor() {
        newformData.append("education", formData.education);
        newformData.append("address", JSON.stringify({line1:formData.addressline1, line2: formData.addressline2}));
        newformData.append("aboutDoctor", formData.aboutDoctor);
-       const {data} = await axios.post(backendUrl + "api/admin/add-doctor", newformData);
+       const {data} = await axios.post(backendUrl + "api/admin/add-doctor", newformData, {
+        headers: {
+          Authorization: `Bearer ${aToken}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
        if(data.success){
-        toast.success("doctor saved")
+        toast.success("doctor saved");
+        setFormData(initialFormData);
        } else {
         toast.error("doctor can't saved!")
        }
@@ -44,7 +50,7 @@ export default function AddDoctor() {
     }
   }
   return (
-    <div className="mx-auto absolute top-26 left-[20%] p-6 bg-white shadow-md rounded-lg">
+    <div className="p-6 bg-white shadow-md rounded-lg">
     <h2 className="text-2xl font-bold mb-6">Add Doctor</h2>
     <form onSubmit={handleSendFormData} className="space-y-4 grid grid-cols-3 gap-4">
 
@@ -133,7 +139,7 @@ export default function AddDoctor() {
 
       {/* Submit Button */}
       <div>
-        <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
+        <button type="submit" className="bg-blue-600 cursor-pointer text-white px-6 py-2 rounded hover:bg-blue-700">
           Add Doctor
         </button>
       </div>

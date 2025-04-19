@@ -3,17 +3,15 @@ const jwt = require('jsonwebtoken');
 const adminAuth = async (req, res, next) => {
     try {
         // Extract the token from the Authorization header (Bearer token)
-        const authHeader = req.headers.authorization;
-        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        const authHeader = req.headers['authorization'];
+        const token = authHeader && authHeader.split(" ")[1];
+
+        if(!token){
             return res.status(401).json({
                 success: false,
-                message: "Unauthorized user! Token is missing or malformed.",
-            });
+                message: "token is not exist"
+            })
         }
-
-        // Extract token (remove "Bearer " prefix)
-        const token = authHeader.split(' ')[1];
-
         // Verify token
         const decodedToken = jwt.verify(token, process.env.JWT_SECRETE);
 

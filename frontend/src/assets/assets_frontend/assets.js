@@ -36,13 +36,16 @@ import General_physician from './General_physician.svg'
 import Gynecologist from './Gynecologist.svg'
 import Neurologist from './Neurologist.svg'
 import Pediatricians from './Pediatricians.svg'
-import pulse from "./pulse.ico"
-
+import pulse from "./favicon.jpg"
+import filter from "./filter.png"
+import close from "./close.png"
 export const assets = {
     appointment_img,
     header_img,
     group_profiles,
     logo,
+    filter,
+    close,
     chats_icon,
     verified_icon,
     info_icon,
