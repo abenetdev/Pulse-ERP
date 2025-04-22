@@ -7,6 +7,7 @@ const AdminContextProvider = (props) => {
     const [aToken, setAToken] = useState(localStorage.getItem("aToken")? localStorage.getItem("aToken"):"");
     const [doctors, setDoctors] = useState([]);
     const [doctorDetail, setDoctorDetail] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
     const fetchDoctors = async () => {
@@ -19,6 +20,7 @@ const AdminContextProvider = (props) => {
             });
             if(response.data){
                 setDoctors(response.data.data);
+                setIsLoading(false);
                 //console.log(response.data.data);
             }
         } catch (error) {
@@ -55,6 +57,7 @@ const AdminContextProvider = (props) => {
         doctorDetail,
         setDoctorDetail,
         fetchDoctorDetail,
+        isLoading
     };
     return (
         <AdminContext.Provider value={value}>

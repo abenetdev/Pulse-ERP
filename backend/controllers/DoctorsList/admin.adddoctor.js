@@ -1,9 +1,8 @@
 const validator = require('validator');
 const bcryptjs = require('bcryptjs');
 const {v2:cloudinary} = require('cloudinary'); 
-const Doctors = require('../models/doctorsModel');
-const jwt = require('jsonwebtoken')
-// adding doctors api
+const Doctors = require('../../models/doctorsModel');
+
 const addDoctor = async (req, res) => {
     try {
         const {name, email, password, speciality, 
@@ -95,100 +94,4 @@ const addDoctor = async (req, res) => {
     }
 };
 
-// fetching lists of doctors
-
-const getAllDoctors = async (req, res) => {
-    try {
-        const gettingDoctors = await Doctors.find({}).select("-password").sort({date: -1});          
-        if(gettingDoctors){
-            return res.status(201).json({
-                success: true,
-                data: gettingDoctors
-            })
-        }
-    } catch (error) {
-        console.log(error);
-        return res.status(501).json({
-            success: false,
-            message: "something went wrong with fetching doctors list"
-        })
-    }
-}
-
-// admin login controller
-
-const getDoctorsDetail = async (req, res) => {
-    try {
-        const {id} = req.params;
-        const gettingDoctorDetail = await Doctors.findById(id).select("-password");
-        if(gettingDoctorDetail){
-            return res.status(201).json({
-                success: true,
-                data: gettingDoctorDetail
-            })
-        }
-    } catch (error) {
-        console.log(error);
-        return res.status(501).json({
-            success: false,
-            message: "something went wrong with fetching doctors list"
-        })
-    }
-}
-
-//delete doctors controller
-
-const deleteDoctor = async (req, res) => {
-    try {
-        const {id} = req.params;
-        const deleteDoctor = await Doctors.findByIdAndDelete(id);
-        if(deleteDoctor){
-            return res.status(201).json({
-                success: true,
-                message: "doctor deleted successfully"
-            })
-        } else {
-            return res.status(401).json({
-                success: false,
-                message: "doctor not found with this id"
-            })
-        }
-    } catch (error) {
-        console.log(error);
-        return res.status(501).json({
-            success: false,
-            message: "something went wrong with deleting doctors list"
-        })
-    }
-}
-
-const adminLogin = async (req, res) => {
-    try {
-        const {email, password} = req.body;
-
-        if(email === process.env.ADMIN_EMAIL || password === process.env.ADMIN_PASSWORD){
-           const token = jwt.sign({email},  process.env.JWT_SECRETE, {expiresIn: "1d"});
-           return res.status(201).json({
-            success: true,
-            token: token
-           });
-        } else {
-            res.json({
-                success: false,
-                message: "UnAuthorized person"
-            })
-        }
-    } catch (error) {
-        res.status(401).json({
-            success: false,
-            message: "something went wrong with admin login api"
-        })
-    }
-} 
-module.exports = {
-    addDoctor, 
-    adminLogin, 
-    getAllDoctors,
-    getDoctorsDetail,
-    deleteDoctor
-};
+module.exports = {addDoctor};

@@ -39,7 +39,7 @@ export default function Login() {
       </div>
       <form onSubmit={handleAdminAuthentication} className="">
         <div className="flex min-h-full flex-col gap-3 m-auto items-center p-8 min-w-[340px] sm:min-w-96 border border-gray-300 text-zinc-600 text-sm rounded-xl shadow-lg">
-          <p className="text-3xl font-bold">{loginRole === "Admin" ? "Welcome! Admin" : "Welcome! Doctor"}</p>
+          <h2 className="text-[30px] font-bold">{loginRole === "Admin" ? "Welcome! Admin" : "Welcome! Doctor"}</h2>
           <div className="w-full">
             <p>Email</p>
             <input 

@@ -3,7 +3,7 @@ import Login from "../pages/Login";
 import { useContext } from "react";
 import { AdminContext } from "../context/AdminContext";
 import NavBar from "../components/NavBar";
-import SideBar from "../components/SideBar";
+//import SideBar from "../components/SideBar";
 import { Route, Routes } from "react-router-dom";
 //pages
 import Dashboard from "../pages/admin/Dashboard"
@@ -12,13 +12,14 @@ import DoctorsList from "../pages/admin/DoctorsList"
 import AddDoctor from "../pages/admin/AddDoctor";
 //guard
 import AdminAuthProtector from "../context/AdminAuthProtector";
+import SnSideBar from "./components/components/ui/SnSideBar";
 export default function App() {
   const {aToken} = useContext(AdminContext);
   return aToken ? (
     <div className=""> 
       <NavBar/>
       <div className="grid grid-cols-[1fr_6fr]">
-        <SideBar/>
+        <SnSideBar/>
         <div className="">
           <Routes>
             <Route path={'/dashboard'} element={<AdminAuthProtector><Dashboard/></AdminAuthProtector>}/>
