@@ -5,7 +5,7 @@ import { useState} from "react";
 export default function NavBar() {
   const navigate = useNavigate();
   const [token, setToken] = useState(true)
-  const [isProfileClick, setIsProfileClick] = useState(false);
+  const [isProfileClick, setIsProfileClick] = useState(true);
 
   return (
     <div className="flex items-center justify-between mx-10 my-4">
@@ -36,7 +36,7 @@ export default function NavBar() {
           )}
         </div>
       ) : (
-        <button onClick={() => navigate('/login')} className="px-7 py-2 bg-blue-500 font-semibold text-white rounded-lg">
+        <button onClick={() => navigate('/login')} className={`px-7 py-2 bg-blue-500 font-semibold text-white rounded-lg`}>
           Create account
         </button>
       )}

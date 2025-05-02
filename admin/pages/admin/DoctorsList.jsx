@@ -2,8 +2,8 @@ import { useContext, useEffect, useState } from 'react';
 import { AdminContext } from '../../context/AdminContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import SidePanel from '../../components/sidePanel';
-import DoctorsListTable from '../../components/DoctorsListTable';
+import SidePanel from '../../Admincomponents/sidePanel';
+import DoctorsListTable from '../../Admincomponents/DoctorsListTable';
 export default function DoctorsList() {
   const {
     doctorDetail,

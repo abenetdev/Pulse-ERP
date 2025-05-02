@@ -22,7 +22,6 @@ const adminAuth = async (req, res, next) => {
                 message: "Unauthorized access! Please log in as an admin.",
             });
         }
-
         // Proceed to the next middleware
         next();
     } catch (error) {

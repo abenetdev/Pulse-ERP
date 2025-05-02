@@ -8,21 +8,18 @@ export default function AdminAuthProtector({ children }) {
   useEffect(() => {
     const token = localStorage.getItem("aToken");
 
-    if (!token) {
-      navigate("/admin/login");
-      return;
-    }
+    if (!token) return navigate("/admin/login");
 
     try {
-      const decodedToken = jwtDecode(token);
+      const { exp } = jwtDecode(token);
       const now = Date.now() / 1000;
 
-      if (decodedToken.exp < now) {
+      if (exp < now) {
         localStorage.removeItem("aToken");
         navigate("/admin/login");
       }
     } catch (error) {
-      console.log("Invalid token:", error);
+      console.error("Invalid token:", error);
       localStorage.removeItem("aToken");
       navigate("/admin/login");
     }
