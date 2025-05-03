@@ -7,7 +7,6 @@ export default function AdminAuthProtector({ children }) {
 
   useEffect(() => {
     const token = localStorage.getItem("aToken");
-
     if (!token) return navigate("/admin/login");
 
     try {

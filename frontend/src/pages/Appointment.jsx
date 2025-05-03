@@ -86,9 +86,9 @@ const getAvailableSlots = async () => {
             <p className="flex items-center gap-1 text-sm font-medium text-gray-900 mt-3">
               About <img src={assets.info_icon} alt="" />
             </p>
-            <p className="text-sm text-gray-500 max-w-[700px] mt-1">{doctorInfo.about}</p>
+            <p className="text-sm text-gray-500 max-w-[700px] mt-1">{doctorInfo.aboutDoctor}</p>
           </div>
-          <p className="font-semibold mt-4">Appointment fee: <span>{currency}{doctorInfo.fees}</span></p>
+          <p className="font-semibold mt-4">Appointment fee: <span>{currency}{doctorInfo.fee}</span></p>
         </div>
       </div>
       {/* --------- Booking slots------------ */}

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 
 import { AdminContext } from "../context/AdminContext";
 import AdminAuthProtector from "../context/AdminAuthProtector";
@@ -17,8 +17,10 @@ import AddDoctor from "../pages/admin/AddDoctor";
 
 export default function App() {
   const { aToken } = useContext(AdminContext);
+  const navigate = useNavigate();
 
   const adminRoutes = [
+    {path: "/", element: <Login />},
     { path: "/dashboard", element: <Dashboard /> },
     { path: "/appointments", element: <Appointments /> },
     { path: "/add-doctor", element: <AddDoctor /> },
@@ -32,7 +34,6 @@ export default function App() {
       </Routes>
     );
   }
-
   return (
     <div>
       <NavBar />

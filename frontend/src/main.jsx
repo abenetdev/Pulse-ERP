@@ -3,11 +3,14 @@ import './index.css'
 import App from './App.jsx'
 import {BrowserRouter} from "react-router-dom"
 import AppContextProvider from './context/DoctorsContext.jsx'
+import UserAuthContextProvider from './context/UserAuthContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
     <AppContextProvider>
-      <App />
+      <UserAuthContextProvider>
+        <App />
+      </UserAuthContextProvider>
     </AppContextProvider>
   </BrowserRouter>,
 )
